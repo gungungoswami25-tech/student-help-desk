@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard — Student Help Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <strong>Student Help Desk <span class="role-tag admin">Admin</span></strong>
+    <span>Manage and resolve student tickets</span>
+  </div>
+  <button id="logout-btn" class="btn btn-danger">Log out</button>
+</header>
+
+<main class="page">
+
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>All tickets</h2>
+        <p class="card-sub">Update the status of a ticket as you work on it.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Raised by</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Raised on</th>
+            <th>Update status</th>
+          </tr>
+        </thead>
+        <tbody id="tickets-body">
+          <tr class="empty-row">
+            <td colspan="7">No tickets to show yet.</td>
+          </tr>
+          <!--
+            Example row structure for reference (generate rows like this from your API data):
+
+            <tr data-ticket-id="123">
+              <td>Unable to access exam portal</td>
+              <td>Technical</td>
+              <td>Aditi Sharma</td>
+              <td>Portal shows a 500 error on login.</td>
+              <td><span class="status-pill open">Open</span></td>
+              <td>21 Sep 2026</td>
+              <td class="actions-cell">
+                <button class="status-btn" data-status="in-progress">Mark in progress</button>
+                <button class="status-btn" data-status="resolved">Mark resolved</button>
+              </td>
+            </tr>
+          -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>
