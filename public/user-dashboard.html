@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Dashboard — Student Help Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <strong>Student Help Desk <span class="role-tag">Student</span></strong>
+    <span>Raise and track your tickets</span>
+  </div>
+  <button id="logout-btn" class="btn btn-danger">Log out</button>
+</header>
+
+<main class="page">
+
+  <div class="card">
+    <h2>Raise a new ticket</h2>
+    <p class="card-sub">Describe your issue and we'll get back to you.</p>
+
+    <form id="ticket-form" novalidate>
+      <div class="grid-2">
+        <div class="field">
+          <label for="ticket-title">Title</label>
+          <input type="text" id="ticket-title" name="ticket-title" placeholder="e.g. Unable to access exam portal" required>
+        </div>
+
+        <div class="field">
+          <label for="ticket-category">Category</label>
+          <select id="ticket-category" name="ticket-category" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="academics">Academics</option>
+            <option value="fees">Fees & Payments</option>
+            <option value="hostel">Hostel</option>
+            <option value="technical">Technical / Portal</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="ticket-description">Description</label>
+        <textarea id="ticket-description" name="ticket-description" placeholder="Add as much detail as you can..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-accent">Submit ticket</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>My tickets</h2>
+        <p class="card-sub">Tickets you have raised so far.</p>
+      </div>
+      <button id="toggle-view-btn" class="btn btn-outline">View all tickets</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Raised on</th>
+          </tr>
+        </thead>
+        <tbody id="my-tickets-body">
+          <tr class="empty-row">
+            <td colspan="4">You haven't raised any tickets yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" id="all-tickets-card">
+    <div class="section-head">
+      <div>
+        <h2>All tickets</h2>
+        <p class="card-sub">Every ticket raised across the help desk.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Raised by</th>
+            <th>Status</th>
+            <th>Raised on</th>
+          </tr>
+        </thead>
+        <tbody id="all-tickets-body">
+          <tr class="empty-row">
+            <td colspan="5">No tickets to show.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

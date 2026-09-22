@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register — Student Help Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand">STUDENT HELP DESK</div>
+    <h1>Create your account</h1>
+    <p class="subtitle">Raise and track support tickets in one place.</p>
+
+    <div id="reg-error-msg" class="error-msg"></div>
+
+    <form id="register-form" novalidate>
+      <div class="field">
+        <label for="reg-name">Full name</label>
+        <input type="text" id="reg-name" name="reg-name" placeholder="e.g. Aditi Sharma" required>
+      </div>
+
+      <div class="field">
+        <label for="reg-email">Email address</label>
+        <input type="email" id="reg-email" name="reg-email" placeholder="you@college.edu" required>
+      </div>
+
+      <div class="field">
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password" name="reg-password" placeholder="At least 8 characters" required minlength="8">
+      </div>
+
+      <div class="field">
+        <label for="reg-confirm-password">Confirm password</label>
+        <input type="password" id="reg-confirm-password" name="reg-confirm-password" placeholder="Re-enter password" required minlength="8">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Create account</button>
+    </form>
+
+    <div class="auth-foot">
+      Already have an account? <a href="login.html">Log in</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

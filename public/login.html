@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — Student Help Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand">STUDENT HELP DESK</div>
+    <h1>Welcome back</h1>
+    <p class="subtitle">Log in to view or raise a ticket.</p>
+
+    <div id="login-error-msg" class="error-msg"></div>
+
+    <form id="login-form" novalidate>
+      <div class="field">
+        <label for="login-email">Email address</label>
+        <input type="email" id="login-email" name="login-email" placeholder="you@college.edu" required>
+      </div>
+
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="login-password" placeholder="Your password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Log in</button>
+    </form>
+
+    <div class="auth-foot">
+      New here? <a href="register.html">Create an account</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

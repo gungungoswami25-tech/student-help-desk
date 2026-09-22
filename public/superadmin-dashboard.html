@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Super Admin Dashboard — Student Help Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <strong>Student Help Desk <span class="role-tag superadmin">Super Admin</span></strong>
+    <span>Manage sub-admins and all tickets</span>
+  </div>
+  <button id="logout-btn" class="btn btn-danger">Log out</button>
+</header>
+
+<main class="page">
+
+  <div class="card">
+    <h2>Create a sub-admin</h2>
+    <p class="card-sub">Add a new admin who can manage tickets.</p>
+
+    <form id="create-subadmin-form" novalidate>
+      <div class="grid-2">
+        <div class="field">
+          <label for="sub-name">Full name</label>
+          <input type="text" id="sub-name" name="sub-name" placeholder="e.g. Rohan Mehta" required>
+        </div>
+
+        <div class="field">
+          <label for="sub-email">Email address</label>
+          <input type="email" id="sub-email" name="sub-email" placeholder="admin@college.edu" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="sub-password">Temporary password</label>
+        <input type="password" id="sub-password" name="sub-password" placeholder="At least 8 characters" required minlength="8">
+      </div>
+
+      <button type="submit" class="btn btn-accent">Create sub-admin</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>Sub-admins</h2>
+        <p class="card-sub">Everyone with admin access.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Created on</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="subadmins-body">
+          <tr class="empty-row">
+            <td colspan="4">No sub-admins added yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-head">
+      <div>
+        <h2>All tickets</h2>
+        <p class="card-sub">Every ticket across the help desk.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Raised by</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Raised on</th>
+            <th>Update status</th>
+          </tr>
+        </thead>
+        <tbody id="tickets-body">
+          <tr class="empty-row">
+            <td colspan="7">No tickets to show yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>
