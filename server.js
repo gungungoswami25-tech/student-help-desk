@@ -6,6 +6,10 @@ dotenv.config();
 const app = express();
 app.use(express.json({ limit: "20kb" }));
 app.use(express.static("public"));
+
+app.get("/", (req, res) => {
+  res.redirect("/login.html");
+});
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/tickets", require("./routes/ticketRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
