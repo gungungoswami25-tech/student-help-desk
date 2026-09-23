@@ -15,6 +15,7 @@
     <strong>Student Help Desk <span class="role-tag">Student</span></strong>
     <span>Raise and track your tickets</span>
   </div>
+  <p class="welcome-message" id="welcome-message" aria-live="polite"></p>
   <button id="logout-btn" class="btn btn-danger">Log out</button>
 </header>
 
@@ -57,7 +58,8 @@
     <div class="section-head">
       <div>
         <h2>My tickets</h2>
-        <p class="card-sub">Tickets you have raised so far.</p>
+        <p class="card-sub">Tickets you have raised so far. Status updates refresh automatically.</p>
+        <p id="ticket-update-notice" class="ticket-update-notice" role="status" aria-live="polite"></p>
       </div>
       <button id="toggle-view-btn" class="btn btn-outline">View all tickets</button>
     </div>
@@ -111,6 +113,5 @@
 
 </main>
 <script src="/js/user.js"></script>
-</body>
 </body>
 </html>

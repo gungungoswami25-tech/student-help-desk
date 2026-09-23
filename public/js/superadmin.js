@@ -1,207 +1,52 @@
 const token = localStorage.getItem("token");
-const user = JSON.parse(localStorage.getItem("user"));
-
-if (!token || !user) {
-    window.location.href = "/login.html";
-}
-
-
-// Create Sub Admin
-const subadminForm = document.getElementById("subadmin-form");
-
-if (subadminForm) {
-    subadminForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById("subadmin-name").value;
-        const email = document.getElementById("subadmin-email").value;
-        const password = document.getElementById("subadmin-password").value;
-
-        try {
-            const response = await fetch("/api/admin/create-subadmin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password
-                })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                alert(data.message);
-                return;
-            }
-
-            alert("Sub Admin created successfully!");
-
-            subadminForm.reset();
-
-            loadSubAdmins();
-
-        } catch (error) {
-            console.error(error);
-            alert("Server error.");
-        }
-    });
-}
-
-
-// Load Sub Admins
-async function loadSubAdmins() {
-
+let user;
+try { user = JSON.parse(localStorage.getItem("user")); } catch { user = null; }
+if (!token || !user || user.role !== "superadmin") window.location.replace("/login.html");
+const headers = { Authorization: `Bearer ${token}` };
+const welcome = document.getElementById("welcome-message");
+if (welcome) welcome.textContent = `Hello, ${user.name || "there"}!`;
+const formatDate = (value) => new Date(value).toLocaleDateString();
+const form = document.getElementById("create-subadmin-form");
+form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const payload = { name: document.getElementById("sub-name").value.trim(), email: document.getElementById("sub-email").value.trim(), password: document.getElementById("sub-password").value };
     try {
-        const response = await fetch("/api/admin/subadmins", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        const subadmins = await response.json();
-
-        const list = document.getElementById("subadmin-list");
-
-        if (!list) return;
-
-        list.innerHTML = "";
-
-        subadmins.forEach(admin => {
-
-            const div = document.createElement("div");
-
-            div.className = "admin-card";
-
-            div.innerHTML = `
-                <h3>${admin.name}</h3>
-                <p>Email: ${admin.email}</p>
-                <p>Role: ${admin.role}</p>
-            `;
-
-            list.appendChild(div);
-        });
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-
-// Load all tickets
-async function loadAllTickets() {
-
-    try {
-        const response = await fetch("/api/tickets/all", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        const tickets = await response.json();
-
-        const ticketList = document.getElementById("ticket-list");
-
-        if (!ticketList) return;
-
-        ticketList.innerHTML = "";
-
-        tickets.forEach(ticket => {
-
-            const div = document.createElement("div");
-
-            div.className = "ticket-card";
-
-            div.innerHTML = `
-                <h3>${ticket.title}</h3>
-                <p>${ticket.description}</p>
-                <p><strong>Status:</strong> ${ticket.status}</p>
-
-                <select class="status-select" data-id="${ticket._id}">
-                    <option value="pending" ${ticket.status === "pending" ? "selected" : ""}>
-                        Pending
-                    </option>
-
-                    <option value="in-progress" ${ticket.status === "in-progress" ? "selected" : ""}>
-                        In Progress
-                    </option>
-
-                    <option value="resolved" ${ticket.status === "resolved" ? "selected" : ""}>
-                        Resolved
-                    </option>
-                </select>
-
-                <button onclick="updateStatus('${ticket._id}')">
-                    Update Status
-                </button>
-            `;
-
-            ticketList.appendChild(div);
-        });
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-
-// Update ticket status
-async function updateStatus(ticketId) {
-
-    const select = document.querySelector(
-        `.status-select[data-id="${ticketId}"]`
-    );
-
-    const status = select.value;
-
-    try {
-
-        const response = await fetch(`/api/tickets/${ticketId}/status`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                status
-            })
-        });
-
+        const response = await fetch("/api/admin/create-subadmin", { method: "POST", headers: { ...headers, "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message);
-            return;
-        }
-
-        alert("Status updated!");
-
-        loadAllTickets();
-
-    } catch (error) {
-        console.error(error);
-        alert("Server error.");
-    }
+        if (!response.ok) throw new Error(data.message || "Could not create sub-admin");
+        form.reset(); await loadSubAdmins();
+    } catch (error) { alert(error.message || "Server error. Please try again."); }
+});
+async function loadSubAdmins() {
+    const body = document.getElementById("subadmins-body");
+    try {
+        const response = await fetch("/api/admin/subadmins", { headers }); const admins = await response.json();
+        if (!response.ok) throw new Error(admins.message || "Could not load sub-admins");
+        body.replaceChildren();
+        if (!admins.length) { const row = body.insertRow(); row.className = "empty-row"; const cell = row.insertCell(); cell.colSpan = 4; cell.textContent = "No sub-admins added yet."; return; }
+        admins.forEach((admin) => { const row = body.insertRow(); [admin.name, admin.email, formatDate(admin.createdAt), "Active"].forEach((value) => { row.insertCell().textContent = value; }); });
+    } catch (error) { console.error(error); }
 }
-
-
-// Logout
-const logoutBtn = document.getElementById("logout-btn");
-
-if (logoutBtn) {
-
-    logoutBtn.addEventListener("click", () => {
-
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-
-        window.location.href = "/login.html";
-    });
+// Reuse the same ticket table and status controls as the admin dashboard.
+async function loadAllTickets() {
+    const body = document.getElementById("tickets-body");
+    try {
+        const response = await fetch("/api/tickets/all", { headers }); const tickets = await response.json();
+        if (!response.ok) throw new Error(tickets.message || "Could not load tickets");
+        body.replaceChildren();
+        if (!tickets.length) { const row = body.insertRow(); row.className = "empty-row"; const cell = row.insertCell(); cell.colSpan = 7; cell.textContent = "No tickets to show yet."; return; }
+        tickets.forEach((ticket) => {
+            const row = body.insertRow();
+            [ticket.title, ticket.category, ticket.student?.name || "Student", ticket.description].forEach((value) => { row.insertCell().textContent = value; });
+            const statusCell = row.insertCell(); const pill = document.createElement("span"); pill.className = `status-pill ${ticket.status === "resolved" ? "resolved" : "open"}`; pill.textContent = ticket.status; statusCell.appendChild(pill);
+            row.insertCell().textContent = formatDate(ticket.createdAt);
+            const action = row.insertCell(); action.className = "actions-cell"; const select = document.createElement("select"); select.setAttribute("aria-label", `Status for ${ticket.title}`);
+            [["pending", "Pending"], ["resolved", "Resolved"]].forEach(([value, label]) => { const option = new Option(label, value); option.selected = ticket.status === value; select.add(option); });
+            const button = document.createElement("button"); button.type = "button"; button.className = "btn btn-outline status-update"; button.textContent = "Save";
+            button.addEventListener("click", async () => { button.disabled = true; try { const r = await fetch(`/api/tickets/${ticket._id}/status`, { method: "PATCH", headers: { ...headers, "Content-Type": "application/json" }, body: JSON.stringify({ status: select.value }) }); const result = await r.json(); if (!r.ok) throw new Error(result.message || "Could not update status"); await loadAllTickets(); } catch (error) { alert(error.message); button.disabled = false; } });
+            action.append(select, button);
+        });
+    } catch (error) { console.error(error); }
 }
-
-
-loadAllTickets();
-loadSubAdmins();
+document.getElementById("logout-btn")?.addEventListener("click", () => { localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.replace("/login.html"); });
+loadAllTickets(); loadSubAdmins();

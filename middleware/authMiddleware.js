@@ -4,13 +4,14 @@ const verifyToken = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
-        if (!authHeader) {
-            return res.status(401).json({
-                message: "No token provided"
-            });
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({ message: "A bearer token is required" });
         }
 
-        const token = authHeader.split(" ")[1];
+        const token = authHeader.slice(7).trim();
+        if (!token || !process.env.JWT_SECRET) {
+            return res.status(401).json({ message: "Invalid or expired token" });
+        }
 
         const decoded = jwt.verify(
             token,

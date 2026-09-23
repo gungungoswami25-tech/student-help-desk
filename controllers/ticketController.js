@@ -13,7 +13,7 @@ const createTicket = async (req, res) => {
         const ticket = await Ticket.create({
             title,
             description,
-            category,
+            category: category.trim(),
             student: req.user.id
         });
 
@@ -92,6 +92,9 @@ const updateTicketStatus = async (req, res) => {
         });
 
     } catch (error) {
+        if (error.name === "CastError") {
+            return res.status(400).json({ message: "Invalid ticket ID" });
+        }
         res.status(500).json({
             message: "Failed to update status",
             error: error.message

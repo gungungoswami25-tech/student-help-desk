@@ -12,16 +12,19 @@ if (registerForm) {
         const errorMsg = document.getElementById("reg-error-msg");
 
         errorMsg.textContent = "";
+        errorMsg.classList.remove("visible");
 
         // Check password length
         if (password.length < 8) {
             errorMsg.textContent = "Password must be at least 8 characters.";
+            errorMsg.classList.add("visible");
             return;
         }
 
         // Check passwords
         if (password !== confirmPassword) {
             errorMsg.textContent = "Passwords do not match.";
+            errorMsg.classList.add("visible");
             return;
         }
 
@@ -42,16 +45,16 @@ if (registerForm) {
 
             if (!response.ok) {
                 errorMsg.textContent = data.message || "Registration failed.";
+                errorMsg.classList.add("visible");
                 return;
             }
-
-            alert("Registration successful!");
 
             window.location.href = "/login.html";
 
         } catch (error) {
             console.error(error);
             errorMsg.textContent = "Server error. Please try again.";
+            errorMsg.classList.add("visible");
         }
     });
 }
